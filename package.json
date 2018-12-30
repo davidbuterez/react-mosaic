@@ -11,7 +11,7 @@
     "url": "https://github.com/palantir/react-mosaic.git"
   },
   "scripts": {
-    "build": "npm-run-all clean build:ts build:less",
+    "build": "npm-run-all build:ts build:less",
     "build:ts": "tsc -p tsconfig-build.json",
     "build:less": "lessc --source-map styles/index.less react-mosaic-component.css",
     "bundle": "rm -rf docs/ && webpack --config webpack/bundle.ts",
@@ -26,7 +26,8 @@
     "test:format": "prettier --list-different 'styles/*.less' '*.md'",
     "test:format:fix": "prettier --write 'styles/*.less' '*.md'",
     "fix": "npm-run-all test:lint:fix test:format:fix",
-    "version": "npm run bundle && git add -A docs/"
+    "version": "npm run bundle && git add -A docs/",
+    "prepare": "npm-run-all build"
   },
   "devDependencies": {
     "@blueprintjs/core": "^3.7.0",
@@ -34,7 +35,7 @@
     "@types/chai": "^4.1.6",
     "@types/classnames": "^2.2.6",
     "@types/dom4": "^2.0.1",
-    "@types/html-webpack-plugin": "^2.30.2",
+    "@types/html-webpack-plugin": "^3.2.0",
     "@types/immutability-helper": "~2.0.15",
     "@types/lodash": "^4.14.116",
     "@types/mocha": "^2.2.48",
@@ -43,12 +44,12 @@
     "@types/react-dom": "^16.0.8",
     "@types/react-hot-loader": "^3.0.6",
     "@types/uuid": "^3.4.4",
-    "@types/webpack": "^3.0.13",
+    "@types/webpack": "^4.4.22",
     "chai": "^4.2.0",
     "css-loader": "^0.28.10",
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "^3.2.0",
     "jsdom": "^11.6.2",
     "jsdom-global": "^3.0.2",
     "less": "^3.8.1",
@@ -72,8 +73,9 @@
     "tslint-plugin-prettier": "^2.0.0",
     "tslint-react": "^3.6.0",
     "typescript": "~3.1.1",
-    "webpack": "^3.7.1",
-    "webpack-dev-server": "^2.9.1"
+    "webpack": "^4.28.3",
+    "webpack-cli": "3.1.2",
+    "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
     "classnames": "^2.2.6",
