@@ -40,6 +40,8 @@ import { CreateNode, MosaicBranch, MosaicDirection, MosaicDragType, MosaicKey } 
 import { createDragToUpdates } from './util/mosaicUpdates';
 import { getAndAssertNodeAtPathExists } from './util/mosaicUtilities';
 import { OptionalBlueprint } from './util/OptionalBlueprint';
+import ContentEditable from "react-sane-contenteditable";
+// import ContentEditable from 'react-contenteditable';
 
 export interface MosaicWindowProps<T extends MosaicKey> {
   title: string;
@@ -70,6 +72,7 @@ export type InternalMosaicWindowProps<T extends MosaicKey> = MosaicWindowProps<T
 
 export interface InternalMosaicWindowState {
   additionalControlsOpen: boolean;
+  title: string;
 }
 
 const PURE_RENDER_IGNORE: (keyof InternalMosaicWindowProps<any> | 'children')[] = [
@@ -108,6 +111,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
 
   state: InternalMosaicWindowState = {
     additionalControlsOpen: false,
+    title: this.props.title,
   };
   context!: MosaicContext<T>;
 
@@ -173,15 +177,42 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
     }
   }
 
+  // private handleChange = (evt: any) => {
+  //   this.setState({ html: evt.target.value });
+  // };
+
+  private handleChange = (_: any, value: any) => {
+    this.setState({ title: value });
+  };
+
   private renderToolbar() {
     const { title, draggable, additionalControls, additionalControlButtonText, connectDragSource, path } = this.props;
     const { additionalControlsOpen } = this.state;
     const toolbarControls = this.getToolbarControls();
 
     let titleDiv: React.ReactElement<any> = (
-      <div title={title} className="mosaic-window-title">
-        {title}
+      // <div title={title} className="mosaic-window-title">
+      //   {title}
+      // </div>
+      <div title={title}>
+        {/* <ContentEditable
+          html={this.state.html} // innerHTML of the editable div
+          disabled={false} // use true to disable editing
+          onChange={this.handleChange} // handle innerHTML change
+          // tagName='article' // Use a custom HTML tag (uses a div by default)
+          className="mosaic-window-title"
+        /> */}
+        <ContentEditable
+          className="mosaic-window-title"
+          content={this.state.title}
+          editable={true}
+          maxLength={50}
+          multiLine={false}
+          onChange={this.handleChange}
+        />
       </div>
+
+      // <ContentEditable className="mosaic-window-title" content={title} editable={true} multiLine={false} />
     );
 
     const draggableAndNotRoot = draggable && path.length > 0;

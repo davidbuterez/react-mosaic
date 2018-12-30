@@ -16,6 +16,20 @@
  */
 @import (reference) 'mixins';
 
+.mosaic-window-title:hover > *[contenteditable="true"] {
+  background-color: rgba(217, 245, 255,0.5);
+}
+
+.mosaic-window-title:read-write:focus {
+  outline: none;
+}
+
+.mosaic-window-title:read-write:hover {
+  cursor: text;
+}
+
+// *[contenteditable="true"]{display: inline-block;}
+
 .mosaic-window,
 .mosaic-preview {
   position: relative;
