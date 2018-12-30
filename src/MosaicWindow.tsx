@@ -41,10 +41,10 @@ import { createDragToUpdates } from './util/mosaicUpdates';
 import { getAndAssertNodeAtPathExists } from './util/mosaicUtilities';
 import { OptionalBlueprint } from './util/OptionalBlueprint';
 import ContentEditable from "react-sane-contenteditable";
-// import ContentEditable from 'react-contenteditable';
 
 export interface MosaicWindowProps<T extends MosaicKey> {
   title: string;
+  titleCallback?: (s: string) => void;
   path: MosaicBranch[];
   className?: string;
   toolbarControls?: React.ReactNode;
@@ -177,12 +177,12 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
     }
   }
 
-  // private handleChange = (evt: any) => {
-  //   this.setState({ html: evt.target.value });
-  // };
-
   private handleChange = (_: any, value: any) => {
+    const { titleCallback } = this.props;
     this.setState({ title: value });
+    if (titleCallback) {
+      titleCallback(value as string);
+    }
   };
 
   private renderToolbar() {
@@ -191,17 +191,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
     const toolbarControls = this.getToolbarControls();
 
     let titleDiv: React.ReactElement<any> = (
-      // <div title={title} className="mosaic-window-title">
-      //   {title}
-      // </div>
       <div title={title}>
-        {/* <ContentEditable
-          html={this.state.html} // innerHTML of the editable div
-          disabled={false} // use true to disable editing
-          onChange={this.handleChange} // handle innerHTML change
-          // tagName='article' // Use a custom HTML tag (uses a div by default)
-          className="mosaic-window-title"
-        /> */}
         <ContentEditable
           className="mosaic-window-title"
           content={this.state.title}
@@ -211,8 +201,6 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
           onChange={this.handleChange}
         />
       </div>
-
-      // <ContentEditable className="mosaic-window-title" content={title} editable={true} multiLine={false} />
     );
 
     const draggableAndNotRoot = draggable && path.length > 0;
