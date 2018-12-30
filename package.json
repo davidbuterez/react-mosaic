@@ -26,8 +26,7 @@
     "test:format": "prettier --list-different 'styles/*.less' '*.md'",
     "test:format:fix": "prettier --write 'styles/*.less' '*.md'",
     "fix": "npm-run-all test:lint:fix test:format:fix",
-    "version": "npm run bundle && git add -A docs/",
-    "prepare": "npm-run-all build"
+    "version": "npm run bundle && git add -A docs/"
   },
   "devDependencies": {
     "@blueprintjs/core": "^3.7.0",
@@ -44,7 +43,7 @@
     "@types/react-dom": "^16.0.8",
     "@types/react-hot-loader": "^3.0.6",
     "@types/uuid": "^3.4.4",
-    "@types/webpack": "^4.4.22",
+    "@types/webpack": "^3.0.13",
     "chai": "^4.2.0",
     "css-loader": "^0.28.10",
     "file-loader": "^1.1.11",
@@ -73,9 +72,8 @@
     "tslint-plugin-prettier": "^2.0.0",
     "tslint-react": "^3.6.0",
     "typescript": "~3.1.1",
-    "webpack": "^4.28.3",
-    "webpack-cli": "3.1.2",
-    "webpack-dev-server": "^3.1.14"
+    "webpack": "^3.7.1",
+    "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
     "classnames": "^2.2.6",
