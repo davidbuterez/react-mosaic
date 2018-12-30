@@ -25,9 +25,5 @@
     "docs",
     "lib",
     "node_modules"
-  ],
-  "files":[
-    "./node_modules/@types/webpack/index.d.ts"
-  ],
-  "skipLibCheck": "true",
+  ]
 }

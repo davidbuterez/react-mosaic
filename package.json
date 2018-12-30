@@ -26,7 +26,8 @@
     "test:format": "prettier --list-different 'styles/*.less' '*.md'",
     "test:format:fix": "prettier --write 'styles/*.less' '*.md'",
     "fix": "npm-run-all test:lint:fix test:format:fix",
-    "version": "npm run bundle && git add -A docs/"
+    "version": "npm run bundle && git add -A docs/",
+    "prepare": "npm-run-all build"
   },
   "devDependencies": {
     "@blueprintjs/core": "^3.7.0",

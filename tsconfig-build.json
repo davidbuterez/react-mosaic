@@ -12,9 +12,5 @@
     "test",
     "webpack"
   ],
-  "extends": "./tsconfig.json",
-  "files":[
-    "./node_modules/@types/webpack/index.d.ts"
-  ],
-  "skipLibCheck": "true",
+  "extends": "./tsconfig.json"
 }
