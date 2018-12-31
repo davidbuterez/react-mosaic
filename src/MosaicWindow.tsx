@@ -31,6 +31,7 @@ import {
   DropTarget,
 } from 'react-dnd';
 
+import ContentEditable from 'react-sane-contenteditable';
 import { DEFAULT_CONTROLS_WITH_CREATION, DEFAULT_CONTROLS_WITHOUT_CREATION } from './buttons/defaultToolbarControls';
 import { Separator } from './buttons/Separator';
 import { MosaicContext, MosaicWindowActionsPropType, MosaicWindowContext } from './contextTypes';
@@ -40,11 +41,11 @@ import { CreateNode, MosaicBranch, MosaicDirection, MosaicDragType, MosaicKey } 
 import { createDragToUpdates } from './util/mosaicUpdates';
 import { getAndAssertNodeAtPathExists } from './util/mosaicUtilities';
 import { OptionalBlueprint } from './util/OptionalBlueprint';
-import ContentEditable from "react-sane-contenteditable";
 
 export interface MosaicWindowProps<T extends MosaicKey> {
   title: string;
   titleCallback?: (s: string) => void;
+  readonlyTitle?: boolean;
   path: MosaicBranch[];
   className?: string;
   toolbarControls?: React.ReactNode;
@@ -186,27 +187,31 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   };
 
   private renderToolbar() {
-    const { title, draggable, additionalControls, additionalControlButtonText, connectDragSource, path } = this.props;
+    const { draggable, additionalControls, additionalControlButtonText, connectDragSource, path } = this.props;
     const { additionalControlsOpen } = this.state;
     const toolbarControls = this.getToolbarControls();
-
-    this.setState({ title });
 
     // tslint:disable-next-line:no-console
     console.log('MOSAIC WINDOW, title props ', this.props.title);
     // tslint:disable-next-line:no-console
     console.log('MOSAIC WINDOW, title state ', this.state.title);
 
+    const content = this.props.readonlyTitle ? (
+      this.props.title
+    ) : (
+      <ContentEditable
+        className="mosaic-window-title-editable"
+        content={this.state.title !== this.props.title ? this.state.title : this.props.title}
+        editable={true}
+        maxLength={30}
+        multiLine={false}
+        onChange={this.handleChange}
+      />
+    );
+
     let titleDiv: React.ReactElement<any> = (
-      <div title={title} className="mosaic-window-title">
-        <ContentEditable
-          className="mosaic-window-title-editable"
-          content={this.state.title}
-          editable={true}
-          maxLength={30}
-          multiLine={false}
-          onChange={this.handleChange}
-        />
+      <div title={this.state.title} className="mosaic-window-title">
+        {content}
       </div>
     );
 
