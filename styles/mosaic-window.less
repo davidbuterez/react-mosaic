@@ -16,15 +16,15 @@
  */
 @import (reference) 'mixins';
 
-.mosaic-window-title:hover > *[contenteditable="true"] {
-  background-color: rgba(217, 245, 255,0.5);
-}
-
-.mosaic-window-title:read-write:focus {
+.mosaic-window-title-editable:read-write:focus {
   outline: none;
 }
 
-.mosaic-window-title:read-write:hover {
+.mosaic-window-title-editable {
+  width: 184px;
+}
+
+.mosaic-window-title-editable:hover {
   cursor: text;
 }
 

@@ -196,12 +196,12 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
     console.log('MOSAIC WINDOW, title state ', this.state.title);
 
     let titleDiv: React.ReactElement<any> = (
-      <div title={title}>
+      <div title={title} className="mosaic-window-title">
         <ContentEditable
-          className="mosaic-window-title"
+          className="mosaic-window-title-editable"
           content={this.state.title}
           editable={true}
-          maxLength={50}
+          maxLength={30}
           multiLine={false}
           onChange={this.handleChange}
         />
