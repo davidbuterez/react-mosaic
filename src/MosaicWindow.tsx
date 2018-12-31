@@ -190,6 +190,11 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
     const { additionalControlsOpen } = this.state;
     const toolbarControls = this.getToolbarControls();
 
+    // tslint:disable-next-line:no-console
+    console.log('MOSAIC WINDOW, title props ', this.props.title);
+    // tslint:disable-next-line:no-console
+    console.log('MOSAIC WINDOW, title state ', this.state.title);
+
     let titleDiv: React.ReactElement<any> = (
       <div title={title}>
         <ContentEditable
