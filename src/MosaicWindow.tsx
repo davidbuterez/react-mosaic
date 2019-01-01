@@ -31,9 +31,9 @@ import {
   DropTarget,
 } from 'react-dnd';
 
+import { Button, Col, Row, Tooltip } from 'antd';
 import ContentEditable from 'react-sane-contenteditable';
 import { DEFAULT_CONTROLS_WITH_CREATION, DEFAULT_CONTROLS_WITHOUT_CREATION } from './buttons/defaultToolbarControls';
-import { Separator } from './buttons/Separator';
 import { MosaicContext, MosaicWindowActionsPropType, MosaicWindowContext } from './contextTypes';
 import { MosaicDragItem, MosaicDropData, MosaicDropTargetPosition } from './internalTypes';
 import { MosaicDropTarget } from './MosaicDropTarget';
@@ -48,7 +48,8 @@ export interface MosaicWindowProps<T extends MosaicKey> {
   readonlyTitle?: boolean;
   path: MosaicBranch[];
   className?: string;
-  toolbarControls?: React.ReactNode;
+  toolbarControlsLeft?: React.ReactNode;
+  toolbarControlsRight?: React.ReactNode;
   additionalControls?: React.ReactNode;
   additionalControlButtonText?: string;
   draggable?: boolean;
@@ -167,10 +168,21 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
     );
   }
 
-  private getToolbarControls() {
-    const { toolbarControls, createNode } = this.props;
-    if (toolbarControls) {
-      return toolbarControls;
+  private getToolbarControlsLeft() {
+    const { toolbarControlsLeft, createNode } = this.props;
+    if (toolbarControlsLeft) {
+      return toolbarControlsLeft;
+    } else if (createNode) {
+      return DEFAULT_CONTROLS_WITH_CREATION;
+    } else {
+      return DEFAULT_CONTROLS_WITHOUT_CREATION;
+    }
+  }
+
+  private getToolbarControlsRight() {
+    const { toolbarControlsRight, createNode } = this.props;
+    if (toolbarControlsRight) {
+      return toolbarControlsRight;
     } else if (createNode) {
       return DEFAULT_CONTROLS_WITH_CREATION;
     } else {
@@ -189,7 +201,8 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   private renderToolbar() {
     const { draggable, additionalControls, additionalControlButtonText, connectDragSource, path } = this.props;
     const { additionalControlsOpen } = this.state;
-    const toolbarControls = this.getToolbarControls();
+    const toolbarControlsLeft = this.getToolbarControlsLeft();
+    const toolbarControlsRight = this.getToolbarControlsRight();
 
     // tslint:disable-next-line:no-console
     console.log('MOSAIC WINDOW, title props ', this.props.title);
@@ -203,7 +216,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
         className="mosaic-window-title-editable"
         content={this.state.title !== this.props.title ? this.state.title : this.props.title}
         editable={true}
-        maxLength={30}
+        maxLength={20}
         multiLine={false}
         onChange={this.handleChange}
       />
@@ -221,29 +234,47 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
     }
 
     const hasAdditionalControls = !isEmpty(additionalControls);
+    const additionalControlsBtn = (
+      <Tooltip title={additionalControlButtonText}>
+        <Button
+          className="mosaic-window-additional-ctrl-btn"
+          type="primary"
+          shape="circle"
+          icon="ellipsis"
+          size="small"
+          onClick={() => this.setAdditionalControlsOpen(!additionalControlsOpen)}
+        />
+      </Tooltip>
+    );
 
     return (
-      <div className={classNames('mosaic-window-toolbar', { draggable: draggableAndNotRoot })}>
-        {titleDiv}
-        <div className={classNames('mosaic-window-controls', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
-          {hasAdditionalControls && (
-            <button
-              onClick={() => this.setAdditionalControlsOpen(!additionalControlsOpen)}
-              className={classNames(
-                OptionalBlueprint.getClasses('BUTTON', 'MINIMAL'),
-                OptionalBlueprint.getIconClass('MORE'),
-                {
-                  [OptionalBlueprint.getClasses('ACTIVE')]: additionalControlsOpen,
-                },
-              )}
-            >
-              <span className="control-text">{additionalControlButtonText!}</span>
-            </button>
-          )}
-          {hasAdditionalControls && <Separator />}
-          {toolbarControls}
-        </div>
-      </div>
+      // <div className={classNames('mosaic-window-toolbar', { draggable: draggableAndNotRoot })}>
+      //   {hasAdditionalControls && additionalControlsBtn}
+      //   <div className={classNames('mosaic-window-controls-left', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
+      //     {toolbarControlsLeft}
+      //   </div>
+      //   {titleDiv}
+      //   <div className={classNames('mosaic-window-controls-right', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
+      //     {toolbarControlsRight}
+      //   </div>
+      // </div>
+
+      <Row className={classNames('mosaic-window-toolbar', { draggable: draggableAndNotRoot })}>
+        <Col xs={2} sm={4} md={6} lg={8} xl={10} style={{ marginTop: '1.5px' }}>
+          {hasAdditionalControls && additionalControlsBtn}
+          <div className={classNames('mosaic-window-controls-left', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
+            {toolbarControlsLeft}
+          </div>
+        </Col>
+        <Col xs={20} sm={16} md={12} lg={8} xl={4}>
+          {titleDiv}
+        </Col>
+        <Col xs={2} sm={4} md={6} lg={8} xl={10}>
+          <div className={classNames('mosaic-window-controls-right', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
+            {toolbarControlsRight}
+          </div>
+        </Col>
+      </Row>
     );
   }
 

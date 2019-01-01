@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 @import (reference) 'mixins';
+@import '~antd/dist/antd.css';
 
 .mosaic-window-title-editable:read-write:focus {
   outline: none;
@@ -22,10 +23,15 @@
 
 .mosaic-window-title-editable {
   width: 184px;
+  text-align: center;
 }
 
 .mosaic-window-title-editable:hover {
   cursor: text;
+}
+
+.mosaic-window-additional-ctrl-btn {
+  margin-left: 8px;
 }
 
 // *[contenteditable="true"]{display: inline-block;}
@@ -55,16 +61,17 @@
   }
 
   .mosaic-window-title {
-    padding-left: 15px;
     flex: 1;
+    margin-left: -33px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     min-height: 18px;
+    z-index: 99;
   }
 
-  .mosaic-window-controls {
-    display: flex;
+  .mosaic-window-controls-left,
+  .mosaic-window-controls-right {
     height: 100%;
 
     .separator {
@@ -73,6 +80,10 @@
       border-left: 1px solid black;
       margin: (@toolbar-height - @separator-height)/2 4px;
     }
+  }
+
+  .mosaic-window-controls-right {
+    float: right;
   }
 
   .mosaic-window-body {
