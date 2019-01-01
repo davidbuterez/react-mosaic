@@ -50,7 +50,8 @@ export interface MosaicWindowProps<T extends MosaicKey> {
   className?: string;
   toolbarControlsLeft?: React.ReactNode;
   toolbarControlsRight?: React.ReactNode;
-  additionalControls?: React.ReactNode;
+  additionalControlsLeft?: React.ReactNode;
+  additionalControlsRight?: React.ReactNode;
   additionalControlButtonText?: string;
   draggable?: boolean;
   createNode?: CreateNode<T>;
@@ -135,7 +136,8 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
       className,
       isOver,
       renderPreview,
-      additionalControls,
+      additionalControlsLeft,
+      additionalControlsRight,
       connectDropTarget,
       connectDragPreview,
       draggedMosaicId,
@@ -152,7 +154,16 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
         {this.renderToolbar()}
         <div className="mosaic-window-body">{this.props.children!}</div>
         <div className="mosaic-window-body-overlay" onClick={() => this.setAdditionalControlsOpen(false)} />
-        <div className="mosaic-window-additional-actions-bar">{additionalControls}</div>
+        <div className="mosaic-window-additional-actions-bar">
+          <Row style={{ width: '100%' }}>
+            <Col span={12}>
+              <div style={{ float: 'left' }}>{additionalControlsLeft}</div>
+            </Col>
+            <Col span={12}>
+              <div style={{ float: 'right' }}>{additionalControlsRight}</div>
+            </Col>
+          </Row>
+        </div>
         {connectDragPreview(renderPreview!(this.props))}
         <div className="drop-target-container">
           {values<MosaicDropTargetPosition>(MosaicDropTargetPosition).map(this.renderDropTarget)}
@@ -199,15 +210,17 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
   };
 
   private renderToolbar() {
-    const { draggable, additionalControls, additionalControlButtonText, connectDragSource, path } = this.props;
+    const {
+      draggable,
+      additionalControlsLeft,
+      additionalControlsRight,
+      additionalControlButtonText,
+      connectDragSource,
+      path,
+    } = this.props;
     const { additionalControlsOpen } = this.state;
     const toolbarControlsLeft = this.getToolbarControlsLeft();
     const toolbarControlsRight = this.getToolbarControlsRight();
-
-    // tslint:disable-next-line:no-console
-    console.log('MOSAIC WINDOW, title props ', this.props.title);
-    // tslint:disable-next-line:no-console
-    console.log('MOSAIC WINDOW, title state ', this.state.title);
 
     const content = this.props.readonlyTitle ? (
       this.props.title
@@ -233,7 +246,7 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
       titleDiv = connectDragSource(titleDiv) as React.ReactElement<any>;
     }
 
-    const hasAdditionalControls = !isEmpty(additionalControls);
+    const hasAdditionalControls = !isEmpty(additionalControlsLeft) || !isEmpty(additionalControlsRight);
     const additionalControlsBtn = (
       <Tooltip title={additionalControlButtonText}>
         <Button
@@ -248,17 +261,6 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
     );
 
     return (
-      // <div className={classNames('mosaic-window-toolbar', { draggable: draggableAndNotRoot })}>
-      //   {hasAdditionalControls && additionalControlsBtn}
-      //   <div className={classNames('mosaic-window-controls-left', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
-      //     {toolbarControlsLeft}
-      //   </div>
-      //   {titleDiv}
-      //   <div className={classNames('mosaic-window-controls-right', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
-      //     {toolbarControlsRight}
-      //   </div>
-      // </div>
-
       <Row className={classNames('mosaic-window-toolbar', { draggable: draggableAndNotRoot })}>
         <Col xs={2} sm={4} md={6} lg={8} xl={10} style={{ marginTop: '1.5px' }}>
           {hasAdditionalControls && additionalControlsBtn}

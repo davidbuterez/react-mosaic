@@ -60,7 +60,7 @@ export type Theme = keyof typeof THEMES;
 
 const additionalControls = React.Children.toArray([<CloseAdditionalControlsButton />]);
 
-const EMPTY_ARRAY: any[] = [];
+// const EMPTY_ARRAY: any[] = [];
 
 export interface ExampleAppState {
   currentNode: MosaicNode<number> | null;
@@ -92,7 +92,8 @@ export class ExampleApp extends React.PureComponent<{}, ExampleAppState> {
         <NumberMosaic
           renderTile={(count, path) => (
             <NumberMosaicWindow
-              additionalControls={count === 3 ? additionalControls : EMPTY_ARRAY}
+              additionalControlsLeft={additionalControls}
+              additionalControlsRight={additionalControls}
               title={`Window ${count}`}
               createNode={this.createNode}
               path={path}
