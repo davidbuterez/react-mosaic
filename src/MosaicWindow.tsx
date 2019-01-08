@@ -45,6 +45,7 @@ import { OptionalBlueprint } from './util/OptionalBlueprint';
 export interface MosaicWindowProps<T extends MosaicKey> {
   title: string;
   titleCallback?: (s: string) => void;
+  additionalBtnCallback?: () => void;
   readonlyTitle?: boolean;
   path: MosaicBranch[];
   className?: string;
@@ -255,7 +256,12 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
           shape="circle"
           icon="ellipsis"
           size="small"
-          onClick={() => this.setAdditionalControlsOpen(!additionalControlsOpen)}
+          onClick={() => {
+            if (this.props.additionalBtnCallback) {
+              this.props.additionalBtnCallback();
+            }
+            this.setAdditionalControlsOpen(!additionalControlsOpen);
+          }}
         />
       </Tooltip>
     );
