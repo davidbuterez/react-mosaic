@@ -260,24 +260,31 @@ export class InternalMosaicWindow<T extends MosaicKey> extends React.Component<
       </Tooltip>
     );
 
-    return (
-      <Row className={classNames('mosaic-window-toolbar', { draggable: draggableAndNotRoot })}>
-        <Col xs={2} sm={4} md={6} lg={8} xl={10} style={{ marginTop: '1.5px' }}>
-          {hasAdditionalControls && additionalControlsBtn}
-          <div className={classNames('mosaic-window-controls-left', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
-            {toolbarControlsLeft}
-          </div>
-        </Col>
-        <Col xs={20} sm={16} md={12} lg={8} xl={4}>
-          {titleDiv}
-        </Col>
-        <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-          <div className={classNames('mosaic-window-controls-right', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
-            {toolbarControlsRight}
-          </div>
-        </Col>
-      </Row>
+    const drag = classNames({ draggable: draggableAndNotRoot });
+    let toolbarDiv = (
+      <div>
+        <Row className={classNames('mosaic-window-toolbar', { draggable: draggableAndNotRoot })}>
+          <Col xs={2} sm={4} md={6} lg={8} xl={10} style={{ marginTop: '1.5px' }} className={drag}>
+            {hasAdditionalControls && additionalControlsBtn}
+            <div className={classNames('mosaic-window-controls-left', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
+              {toolbarControlsLeft}
+            </div>
+          </Col>
+          <Col xs={20} sm={16} md={12} lg={8} xl={4} className={drag}>
+            {titleDiv}
+          </Col>
+          <Col xs={2} sm={4} md={6} lg={8} xl={10} className={drag}>
+            <div className={classNames('mosaic-window-controls-right', OptionalBlueprint.getClasses('BUTTON_GROUP'))}>
+              {toolbarControlsRight}
+            </div>
+          </Col>
+        </Row>
+      </div>
     );
+    if (draggableAndNotRoot) {
+      toolbarDiv = connectDragSource(toolbarDiv) as React.ReactElement<any>;
+    }
+    return toolbarDiv;
   }
 
   private renderDropTarget = (position: MosaicDropTargetPosition) => {
